@@ -1,4 +1,4 @@
-#include <Servo.h>
+  #include <Servo.h>
 #include <Wire.h>
 #include <SparkFun_BNO08x.h>
 
@@ -7,7 +7,7 @@ int testes_pin = 9;
 
 void setup() {
   testes.attach(testes_pin)
-  Serial.begin(9600);
+  Serial.begin(115200);
 
 }
 
