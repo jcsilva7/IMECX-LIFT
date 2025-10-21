@@ -1,4 +1,4 @@
-// The purpose of this test is to use the BNO085 module to control a servo motor based on his roll angle
+// The purpose of this test is to verify the readings from the BNO085 module
 
 #include <Servo.h>
 #include <Wire.h>
@@ -30,13 +30,13 @@ void setup() {
 
 void loop() {
   if(myIMU.dataAvailable()) {
-    float roll = myIMU.getRoll();
+    float roll  = myIMU.getRoll();
+    float pitch = myIMU.getPitch();
+    float yaw   = myIMU.getYaw();
 
-    Serial.print("Roll: ");
-    Serial.println(roll, 2);
-
-    // Write a mapped value (and also constrained to avoid mechanical issues) into the servo
-    servo.write(constrain(map(roll, -90, 90, 0, 180), 0, 180));
+    Serial.print("Roll: "); Serial.print(roll);
+    Serial.print(" Pitch: "); Serial.print(pitch);
+    Serial.print(" Yaw: "); Serial.println(yaw);
   }
 
   // Small delay to stabilize readings
