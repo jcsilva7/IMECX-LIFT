@@ -1,5 +1,39 @@
-# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,linux,windows,macos
-# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,linux,windows,macos
+# Created by https://www.toptal.com/developers/gitignore/api/windows,linux,macos,visualstudiocode,c++,platformio
+# Edit at https://www.toptal.com/developers/gitignore?templates=windows,linux,macos,visualstudiocode,c++,platformio
+
+### C++ ###
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
 
 ### Linux ###
 *~
@@ -49,6 +83,13 @@ Temporary Items
 # iCloud generated files
 *.icloud
 
+### PlatformIO ###
+.pioenvs
+.piolibdeps
+.clang_complete
+.gcc-flags.json
+.pio
+
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json
@@ -94,4 +135,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,linux,windows,macos
+# End of https://www.toptal.com/developers/gitignore/api/windows,linux,macos,visualstudiocode,c++,platformio
