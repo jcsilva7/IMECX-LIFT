@@ -1,4 +1,3 @@
-
 // This is the receiver code of the test to check remote servo control
 
 #include <SPI.h>
@@ -46,8 +45,13 @@ void setup()
   ResetData();
   radio.begin();
   radio.openReadingPipe(1,pipeIn);
+  radio.setPALevel(RF24_PA_MAX);
+  radio.setDataRate(RF24_250KBPS);
+  radio.setChannel(108);
   
-  radio.startListening(); //start the radio comunication for receiver | Alıcı olarak sinyal iletişimi başlatılıyor
+  radio.startListening(); //start the radio comunication for receiver
+
+  Serial.println("Reveiver Ready")
 }
 
 unsigned long lastRecvTime = 0;
@@ -58,14 +62,12 @@ void recvData()
     radio.read(&data, sizeof(Signal));
     lastRecvTime = millis();   // receive the data
 
-    Serial.println("==============================");
     Serial.print("Roll: ");
     Serial.println(data.roll);
     Serial.print("Pitch: ");
     Serial.println(data.pitch);
     Serial.print("Yaw: ");
     Serial.println(data.yaw);  
-    Serial.println("==============================");
   }
 }
 
@@ -77,6 +79,7 @@ void loop()
   
   if ( now - lastRecvTime > 1000 ) {
     ResetData(); // Signal lost.. Reset data 
+    Serial.println("Signal Lost")
   }
   
   ch_width_1 = map(data.yaw, 0, 255, 1000, 2000);     // pin D2 (PWM signal)
@@ -87,5 +90,7 @@ void loop()
   ch1.writeMicroseconds(ch_width_1);
   ch2.writeMicroseconds(ch_width_2);
   ch3.writeMicroseconds(ch_width_3);
+
+  delay(10);
   
 }

@@ -33,6 +33,8 @@ void setup(){
   //Start everything up
   radio.begin();
   radio.openWritingPipe(pipeOut);
+  radio.setPALevel(RF24_PA_MAX);
+  radio.setChannel(108);
   radio.stopListening(); //start the radio comunication for Transmitter
   
   ResetData();
@@ -41,10 +43,13 @@ void setup(){
 // Joystick center and its borders
 int mapJoystickValues(int val, int lower, int middle, int upper, bool reverse){
   val = constrain(val, lower, upper);
+
   if ( val < middle )
   val = map(val, lower, middle, 0, 128);
+
   else
   val = map(val, middle, upper, 128, 255);
+
   return ( reverse ? 255 - val : val );
 }
 
@@ -64,5 +69,9 @@ void loop(){
     Serial.print("Yaw: ");
     Serial.println(data.yaw);  
     Serial.println("==============================");
+  } else {
+    Serial.println("Transmission Failed");
   }
+
+  delay(20);
 }
