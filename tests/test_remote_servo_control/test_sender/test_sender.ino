@@ -35,8 +35,14 @@ void setup(){
   radio.openWritingPipe(pipeOut);
   radio.setPALevel(RF24_PA_MAX);
   radio.setChannel(108);
+  radio.setAutoAck(true);
   radio.stopListening(); //start the radio comunication for Transmitter
   
+  // Debug arduino connection to radio chip
+  Serial.print("Radio is connected? ");
+  Serial.println(radio.isChipConnected() ? "Yes" : "No");
+
+
   ResetData();
 }
 
@@ -73,5 +79,5 @@ void loop(){
     Serial.println("Transmission Failed");
   }
 
-  delay(20);
+  delay(1500);
 }
