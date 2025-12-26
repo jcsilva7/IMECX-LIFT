@@ -72,12 +72,10 @@ void loop(){
     Serial.println(data.roll);
     Serial.print("Pitch: ");
     Serial.println(data.pitch);
-    Serial.print("Yaw: ");
-    Serial.println(data.yaw);  
     Serial.println("==============================");
   } else {
     Serial.println("Transmission Failed");
   }
 
-  delay(1500);
+  delay(20);
 }
