@@ -77,5 +77,5 @@ void loop(){
     Serial.println("Transmission Failed");
   }
 
-  delay(20);
+  delay(200);
 }

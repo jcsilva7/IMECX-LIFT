@@ -7,16 +7,14 @@
 
 int ch_width_1 = 0;
 int ch_width_2 = 0;
-int ch_width_3 = 0;
 
 Servo ch1;
 Servo ch2;
-Servo ch3;
 
 struct Signal {
-byte pitch;
-byte roll;
-byte yaw;
+  byte pitch;
+  byte roll;
+  byte yaw;
 };
 
 Signal data;
@@ -31,7 +29,6 @@ void ResetData()
   // The middle position for Potenciometers. (254/2=127)
   data.pitch = 127;  // Center
   data.roll = 127;   // Center
-  data.yaw = 127;   // Center
 }
 
 void setup()
@@ -40,7 +37,6 @@ void setup()
   //Set the pins for each PWM signal
   ch1.attach(3);
   ch2.attach(6);
-  ch3.attach(9);
   //Configure the NRF24 module
   ResetData();
   radio.begin();
@@ -66,8 +62,6 @@ void recvData()
     Serial.println(data.roll);
     Serial.print("Pitch: ");
     Serial.println(data.pitch);
-    Serial.print("Yaw: ");
-    Serial.println(data.yaw);  
   }
 }
 
@@ -82,14 +76,12 @@ void loop()
     Serial.println("Signal Lost")
   }
   
-  ch_width_1 = map(data.yaw, 0, 255, 1000, 2000);     // pin D2 (PWM signal)
-  ch_width_2 = map(data.pitch,    0, 255, 1000, 2000);     // pin D3 (PWM signal)
-  ch_width_3 = map(data.roll,     0, 255, 1000, 2000);     // pin D4 (PWM signal)
+  ch_width_1 = map(data.pitch,    0, 255, 1000, 2000);     // pin D3 (PWM signal)
+  ch_width_2 = map(data.roll,     0, 255, 1000, 2000);     // pin D4 (PWM signal)
   
   // Write the PWM signal
   ch1.writeMicroseconds(ch_width_1);
   ch2.writeMicroseconds(ch_width_2);
-  ch3.writeMicroseconds(ch_width_3);
 
   delay(10);
   
