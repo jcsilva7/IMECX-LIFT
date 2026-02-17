@@ -1,22 +1,20 @@
 // This is the sender code of the test to check remote servo control
 
-
 #include <SPI.h>
 #include <nRF24L01.h>
 #include <RF24.h>
+#include <printf.h>
 
 const uint64_t pipeOut = 0xE9E8F0F0E1LL;   //IMPORTANT: The same as in the receiver 0xE9E8F0F0E1LL
 RF24 radio(7, 8); // select CE,CSN pin
 
 byte pitch;
 byte roll;
-byte yaw;
 
 struct Signal {
   byte pitch;
   byte roll;
-  byte yaw;
-};
+} __attribute__((packed));
 
 Signal data;
 
@@ -24,19 +22,30 @@ void ResetData()
 {
   data.pitch = 127; // Center (Signal lost position)
   data.roll = 127; // Center (Signal lost position)
-  data.yaw = 127; // Center(Signal lost position)
   }
   
 void setup(){
   Serial.begin(9600);
   
+  // Enable radio debug prints
+  printf_begin();
+
   //Start everything up
-  radio.begin();
+  if(!radio.begin()) {
+    Serial.println("Radio HW Not Working");
+    while (1);
+  }
+
+  // Dump registers for debugging
+  radio.printDetails();
+
   radio.openWritingPipe(pipeOut);
-  radio.setPALevel(RF24_PA_MAX);
+  radio.setPALevel(RF24_PA_LOW);
+  radio.setDataRate(RF24_250KBPS);
   radio.setChannel(108);
   radio.setAutoAck(true);
-  radio.stopListening(); //start the radio comunication for Transmitter
+  // Start the radio comunication for Transmitter
+  radio.stopListening();
   
   // Debug arduino connection to radio chip
   Serial.print("Radio is connected? ");
@@ -64,7 +73,6 @@ void loop(){
   // Setting may be required for the correct values of the control levers.
   data.roll = mapJoystickValues( analogRead(A2), 12, 524, 1020, true );      // "true" or "false" for servo direction
   data.pitch = mapJoystickValues( analogRead(A3), 12, 524, 1020, true );     // "true" or "false" for servo direction
-  data.yaw = mapJoystickValues( analogRead(A1), 12, 524, 1020, true );       // "true" or "false" for servo direction
   
   if(radio.write(&data, sizeof(Signal))){
     Serial.println("==============================");
@@ -72,10 +80,13 @@ void loop(){
     Serial.println(data.roll);
     Serial.print("Pitch: ");
     Serial.println(data.pitch);
+    Serial.println("-----DEBUG------");
+    uint8_t flags;
+    radio.printStatus(flags);
     Serial.println("==============================");
   } else {
     Serial.println("Transmission Failed");
   }
 
-  delay(200);
+  delay(10);
 }

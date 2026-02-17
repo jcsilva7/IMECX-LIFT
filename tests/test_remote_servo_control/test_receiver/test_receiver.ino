@@ -11,11 +11,13 @@ int ch_width_2 = 0;
 Servo ch1;
 Servo ch2;
 
+short int ch1_pin = 3;
+short int ch2_pin = 6;
+
 struct Signal {
   byte pitch;
   byte roll;
-  byte yaw;
-};
+} __attribute__((packed));
 
 Signal data;
 
@@ -35,19 +37,23 @@ void setup()
 {
   Serial.begin(9600);
   //Set the pins for each PWM signal
-  ch1.attach(3);
-  ch2.attach(6);
+  ch1.attach(ch1_pin);
+  ch2.attach(ch2_pin);
   //Configure the NRF24 module
   ResetData();
   radio.begin();
-  radio.openReadingPipe(1,pipeIn);
+  radio.openReadingPipe(0 ,pipeIn);
   radio.setPALevel(RF24_PA_MAX);
   radio.setDataRate(RF24_250KBPS);
   radio.setChannel(108);
   
   radio.startListening(); //start the radio comunication for receiver
 
-  Serial.println("Reveiver Ready")
+  Serial.print("Radio chip connected? ");
+  Serial.println(radio.isChipConnected() ? "Yes" : "No");
+
+
+  Serial.println("Receiver Ready");
 }
 
 unsigned long lastRecvTime = 0;
@@ -73,7 +79,7 @@ void loop()
   
   if ( now - lastRecvTime > 1000 ) {
     ResetData(); // Signal lost.. Reset data 
-    Serial.println("Signal Lost")
+    Serial.println("Signal Lost");
   }
   
   ch_width_1 = map(data.pitch,    0, 255, 1000, 2000);     // pin D3 (PWM signal)
