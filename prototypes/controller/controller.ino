@@ -26,6 +26,17 @@ const int throttleAxis = A4;
 void ResetData(){
   data.pitch = 1500;
   data.roll = 1500;
+  data.throttle = 0;
+}
+
+/*
+  Expo/curves so plane feels more precise around the center 
+  by softer stick response near 0 values
+*/
+float applyExpo(int raw, float expo) {
+  float normalized = (raw - 512) / 512.0;  // -1.0 to 1.0
+  float curved = expo * pow(normalized, 3) + (1 - expo) * normalized;
+  return (curved * 512) + 512;
 }
 
 void setup() {
@@ -49,13 +60,12 @@ void setup() {
   }
 
   ResetData();
-  data.throttle = 0;
 }
 
 void loop() {
   // Map left joystick values from analog interval to servo interval
-  data.roll = map(analogRead(rollAxis), 0, 1023, 1000, 2000);
-  data.pitch = map(analogRead(pitchAxis), 0, 1023, 1000, 2000);
+  data.roll = map((long)applyExpo(analogRead(rollAxis), 0.5), 0, 1023, 1000, 2000);
+  data.pitch = map((long)applyExpo(analogRead(pitchAxis), 0.5), 0, 1023, 1000, 2000);
   // Map right joystick values to small change values for smoother throttle control
   int throttleStick = map(analogRead(throttleAxis), 0, 1023, -10, 10);
   
