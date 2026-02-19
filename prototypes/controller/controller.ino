@@ -5,6 +5,8 @@
 #include <RF24.h>
 #include <Data.h>
 
+#define DEBUG 0
+
 // CE, CSN pins, respectively 
 const int CE_pin = 7;
 const int CSN_pin = 8;
@@ -27,7 +29,10 @@ void ResetData(){
 }
 
 void setup() {
+  if(DEBUG) Serial.begin(9600);
+  
   if(!radio.begin()){
+    if(DEBUG) Serial.println("Radio HW not working");
     while(1);
   }
 
@@ -37,6 +42,11 @@ void setup() {
   radio.setChannel(108);
   radio.setAutoAck(true);
   radio.stopListening();
+
+  if(DEBUG){
+    Serial.print("Radio is connected? ");
+    Serial.println(radio.isChipConnected() ? "Yes" : "No");
+  }
 
   ResetData();
   data.throttle = 0;
@@ -53,6 +63,17 @@ void loop() {
 
   // Send data w/ delay for 50Hz (most servos frequency)
   radio.write(&data, sizeof(Signal));
+
+  if(DEBUG){
+    Serial.println("==============================");
+    Serial.print("Roll: ");
+    Serial.println(data.roll);
+    Serial.print("Pitch: ");
+    Serial.println(data.pitch);
+    Serial.print("Throttle: ");
+    Serial.println(data.throttle);
+    Serial.println("==============================");
+  }
 
   delay(20);
 
