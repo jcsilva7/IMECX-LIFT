@@ -1,17 +1,16 @@
 // Code for remote controller
 
 #include <SPI.h>
-#include <nRF24L01.h>
 #include <RF24.h>
-#include <Data.h>
+#include <RadioLIFT.h>
 
 #define DEBUG 0
 
 // CE, CSN pins, respectively 
-const int CE_pin = 7;
-const int CSN_pin = 8;
+#define CE_PIN  7
+#define CSN_PIN 8
 
-RF24 radio(CE_pin, CSN_pin);
+RF24 radio(CE_PIN, CSN_PIN);
 
 // Struct with sent data
 Signal data;
@@ -26,7 +25,6 @@ const int throttleAxis = A4;
 void ResetData(){
   data.pitch = 1500;
   data.roll = 1500;
-  data.throttle = 0;
 }
 
 /*
@@ -34,7 +32,7 @@ void ResetData(){
   by softer stick response near 0 values
 */
 float applyExpo(int raw, float expo) {
-  float normalized = (raw - 512) / 512.0;  // -1.0 to 1.0
+  float normalized = (raw - 512) / 512.0;
   float curved = expo * pow(normalized, 3) + (1 - expo) * normalized;
   return (curved * 512) + 512;
 }
@@ -48,9 +46,9 @@ void setup() {
   }
 
   radio.openWritingPipe(pipeOut);
-  radio.setPALevel(RF24_PA_MAX);
-  radio.setDataRate(RF24_250KBPS);
-  radio.setChannel(108);
+  radio.setPALevel(CURRENT_RANGE);
+  radio.setDataRate(CURRENT_DATA_RATE);
+  radio.setChannel(CURRENT_CHANNEL);
   radio.setAutoAck(true);
   radio.stopListening();
 

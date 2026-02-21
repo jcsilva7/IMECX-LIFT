@@ -1,7 +1,6 @@
 // This is the receiver code of the test to check remote servo control
 
 #include <SPI.h>
-#include <nRF24L01.h>
 #include <RF24.h>
 #include <Servo.h>
 
