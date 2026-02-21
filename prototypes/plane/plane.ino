@@ -64,6 +64,15 @@ void loop(){
         lastRcvTime = millis();
     }
 
+    if(DEBUG){
+        Serial.print("Roll: ");
+        Serial.println(data.roll);
+        Serial.print("Pitch: ");
+        Serial.println(data.pitch);
+        Serial.print("Throttle: ");
+        Serial.println(data.throttle);
+    }
+
     unsigned long now = millis();
 
     // Check if conn is lost

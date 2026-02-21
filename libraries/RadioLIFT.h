@@ -1,5 +1,5 @@
-#ifndef DATA_H
-#define DATA_H
+#ifndef RADIOLIFT_H
+#define RADIOLIFT_H
 
 #include <RF24.h>
 
