@@ -12,15 +12,18 @@
 // Receiver pins
 #define CE_PIN  7
 #define CSN_PIN 8
+// #define THROTTLE_PIN 9
 
 // Show debug prints in serial console or not
 #define DEBUG 0
 
 int left_wing_pos = 0;
 int right_wing_pos = 0;
+int throttle_pos = 0;
 
 Servo left_wing;
 Servo right_wing;
+// Servo throttle;
 
 Signal data;
 
