@@ -4,6 +4,7 @@
 #include <RadioLIFT.h>
 
 // TODO: throttle
+// TODO: pid w/ control module
 
 // Servo's pins
 #define LEFT_WING_PIN   3
@@ -44,7 +45,7 @@ void setup(){
     ResetData();
 
     radio.begin();
-    radio.openReadingPipe(0, pipeOut);
+    radio.openReadingPipe(1, pipeOut);
     radio.setPALevel(CURRENT_RANGE);
     radio.setDataRate(CURRENT_DATA_RATE);
     radio.setChannel(CURRENT_CHANNEL);
@@ -84,8 +85,8 @@ void loop(){
         if(DEBUG) Serial.println("Signal Lost");
     }
 
-    left_wing.writeMicroseconds(constrain(data.pitch + data.roll - 1500 , 1000, 2000));
-    right_wing.writeMicroseconds(constrain(3000 - (data.pitch - data.roll + 1500), 1000, 2000));
-
+    left_wing.writeMicroseconds(constrain(data.pitch + data.roll - 1500, 1000, 2000));
+    right_wing.writeMicroseconds(constrain(data.pitch - data.roll + 1500, 1000, 2000));
+    
     delay(10);
 }

@@ -15,8 +15,10 @@ RF24 radio(CE_PIN, CSN_PIN);
 // Struct with sent data
 Signal data;
 
-const int rollAxis = A2;
-const int pitchAxis = A3;
+ou'd need a gyroscope/IMU (like an MPU-6050) on the plane. The PID would then:
+
+    Read the actual rotation rate or angle froconst int rollAxis = A3;
+const int pitchAxis = A2;
 const int throttleAxis = A4;
 
 /*
