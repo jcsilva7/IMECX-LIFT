@@ -20,8 +20,8 @@ jobs:
       - name: Lint all Arduino sketches
         uses: arduino/arduino-lint-action@v1
         with:
-          sketch-paths: ./src
-          library-paths: ./libraries
+          path: ./src
+          recursive: true
           compliance: strict
 
       - name: Compile all sketches
