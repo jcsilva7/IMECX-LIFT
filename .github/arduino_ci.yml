@@ -1,0 +1,33 @@
+name: Arduino CI
+on: [push, pull_request]
+
+jobs:
+  lint_and_build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Arduino CLI
+        uses: arduino/setup-arduino-cli@v1
+
+      - name: Install core and libraries
+        run: |
+          arduino-cli core update-index
+          arduino-cli core install arduino:avr
+          arduino-cli lib install "RF24"
+
+      - name: Lint all Arduino sketches
+        uses: arduino/arduino-lint-action@v1
+        with:
+          sketch-paths: ./src
+          library-paths: ./libraries
+          compliance: strict
+
+      - name: Compile all sketches
+        run: |
+          find ./src -name '*.ino' | while read sketch; do
+            dir=$(dirname "$sketch")
+            echo "Compiling $dir..."
+            arduino-cli compile --fqbn arduino:avr:nano --libraries ./libraries "$dir"
+          done
