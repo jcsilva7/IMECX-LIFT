@@ -16,6 +16,7 @@ jobs:
           arduino-cli core update-index
           arduino-cli core install arduino:avr
           arduino-cli lib install "RF24"
+          arduino-cli lib install "Servo"
 
       - name: Lint all Arduino sketches
         uses: arduino/arduino-lint-action@v1
