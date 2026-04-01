@@ -8,7 +8,8 @@ const uint64_t pipeOut = 0xF0F0F0F0C3LL;
 struct Signal {
   uint16_t pitch;
   uint16_t roll;
-  char throttle;
+  uint16_t rudder;
+  //char throttle;
 } __attribute__((packed));
 
 rf24_pa_dbm_e CURRENT_RANGE = RF24_PA_MAX;
