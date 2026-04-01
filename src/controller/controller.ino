@@ -17,9 +17,9 @@ RF24 radio(CE_PIN, CSN_PIN);
 // Struct with sent data
 Signal data;
 
-int rollAxis = A3;
+const int rollAxis = A3;
 const int pitchAxis = A2;
-const int throttleAxis = A4;
+const int rudderAxis = A4;
 
 /*
   Center servos when no commands are received
@@ -27,6 +27,7 @@ const int throttleAxis = A4;
 void ResetData(){
   data.pitch = 1500;
   data.roll = 1500;
+  data.rudder = 1500;
 }
 
 /*
@@ -66,10 +67,7 @@ void loop() {
   // Map left joystick values from analog interval to servo interval
   data.roll = map((long)applyExpo(analogRead(rollAxis), 0.5), 0, 1023, 1000, 2000);
   data.pitch = map((long)applyExpo(analogRead(pitchAxis), 0.5), 0, 1023, 1000, 2000);
-  // Map right joystick values to small change values for smoother throttle control
-  int throttleStick = map(analogRead(throttleAxis), 0, 1023, -10, 10);
-  
-  data.throttle = (abs(throttleStick) > 2) ? throttleStick : 0;
+  data.rudder = map((long)applyExpo(analogRead(rudderAxis), 0.5), 0, 1023, 1000, 2000);
 
   // Send data w/ delay for 50Hz (most servos frequency)
   radio.write(&data, sizeof(Signal));
@@ -80,8 +78,8 @@ void loop() {
     Serial.println(data.roll);
     Serial.print("Pitch: ");
     Serial.println(data.pitch);
-    Serial.print("Throttle: ");
-    Serial.println(data.throttle);
+    Serial.print("Rudder: ");
+    Serial.println(data.rudder);
     Serial.println("==============================");
   }
 
