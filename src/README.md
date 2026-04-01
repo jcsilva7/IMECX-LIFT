@@ -1,5 +1,5 @@
 # IMECX-LIFT
 
-## Prototypes
+## Source
 
-This folder is where prototypes being developed, or in the testing phase, are maintained. This is the main working folder.
+This is the main working folder where the developed projects are located

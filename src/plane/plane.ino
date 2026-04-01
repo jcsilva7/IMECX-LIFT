@@ -3,6 +3,9 @@
 #include <Servo.h>
 #include <RadioLIFT.h>
 
+// TODO: (now) rudder
+
+// TODO: phase 2
 // TODO: throttle
 // TODO: pid w/ control module
 
