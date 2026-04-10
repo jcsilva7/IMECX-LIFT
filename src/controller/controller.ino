@@ -4,8 +4,6 @@
 #include <RF24.h>
 #include <RadioLIFT.h>
 
-// TODO: right joystick
-
 #define DEBUG 0
 
 // CE, CSN pins, respectively 
